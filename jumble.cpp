@@ -3,11 +3,17 @@
 #include <iostream>
 #include "jumble.h"
 
-BadJumbleException::BadJumbleException(const string& message): message(message) {} ;
+//BadJumbleException 
+BadJumbleException::BadJumbleException(const string& message): message(message) {};
 
-JumblePuzzle::JumblePuzzle(vector<string> word, string diff){
-    //checking if word is approate lengeth
-    if(word.size() < 3 || word.size() > 10){
+string BadJumbleException::what() const{
+     return message; 
+     }
+
+
+JumblePuzzle::JumblePuzzle(string word, string diff){
+    //checking if word is approate length
+    if(word.length() < 3 || word.length() > 10){
         throw BadJumbleException("Invaled Input for hidden word, must be longer \nthen 3 letters and less the 10"); 
     }
 
@@ -18,27 +24,23 @@ JumblePuzzle::JumblePuzzle(vector<string> word, string diff){
     random_device rd;  // Obtain a random seed from hardware if available
     mt19937 gen(rd()); // Seed the generator
     uniform_int_distribution<> distr('a', 'z');
-
-
-    //choosing random direction for diffen word
-    string chars = "nesw";
-    uniform_int_distribution<> distr(0, chars.size() - 1);
-    this->direction = chars[distr(gen)];
     
-
     //Generate and output the random number
-    cout << distr(gen) << std::endl;
+    //cout << distr(gen) << std::endl;
     
     //getting size of 2D array based on input 
     if(diff == "easy"){
-        this->size = word.size() * 2;
+        this->size = word.length() * 2;
     }else if(diff == "medium"){
-        this->size = word.size() * 3;
+        this->size = word.length() * 3;
     }else if(diff == "hard"){
-        this->size = word.size() * 4;
+        this->size = word.length() * 4;
     }else{
         throw BadJumbleException("Invaled Input for Puzzle Diffcultly");
     }
+
+    //making sure the grid is different everytime
+    srand(static_cast<unsigned int>(time(0)));
 
     //Creating puzzle with random letters
     this->jumbleArr = new char*[size];
@@ -55,8 +57,60 @@ JumblePuzzle::JumblePuzzle(vector<string> word, string diff){
     }
 
     //inputting the hidden word
+    string directions = "nsew";
+    bool placed = false;
+
+    
+     do {
+        int startRow = rand() % size;
+        int startCol = rand() % size;
+        char direction = directions[rand() % 4];
+
+        
+        int dRow = 0, dCol = 0;
+        switch (direction) {
+            case 'n': dRow = -1; break;
+            case 'e': dCol = 1; break;
+            case 's': dRow = 1; break;
+            case 'w': dCol = -1; break;
+        }
+        int endRow = startRow + dRow * (word.length() - 1);
+        int endCol = startCol + dCol * (word.length() - 1);
+        if (endRow >= 0 && endRow < size && endCol >= 0 && endCol < size) {
+            for (int i = 0; i < word.length(); ++i) {
+                jumbleArr[startRow + i * dRow][startCol + i * dCol] = word[i];
+            }
+            this->rp = startRow;
+            this->cp = startCol;
+            this->direction = direction;
+            placed = true;
+        }
+    } while (!placed);
     
 };
+
+JumblePuzzle::JumblePuzzle(const JumblePuzzle& obj) {
+    this->size = obj.size;
+    this->rp = obj.rp;
+    this->cp = obj.cp;
+    this->direction = obj.direction;
+
+    jumbleArr = new charArrayPtr[size];
+    for (int i = 0; i < size; i++) {
+        jumbleArr[i] = new char[size];
+        for (int j = 0; j < size; j++) {
+            jumbleArr[i][j] = 'a' + rand() % 26;
+        }
+    }
+}
+
+JumblePuzzle::~JumblePuzzle(){
+    for (int j = 0; j < size; j++) {
+        delete[] jumbleArr[j];
+    }
+    delete[] jumbleArr;
+}
+
 
 charArrayPtr* JumblePuzzle::getJumble() const {
     return this->jumbleArr;
@@ -71,9 +125,9 @@ char JumblePuzzle::getDirection() const {
 }
 
 int JumblePuzzle::getRowPos() const{
-    return this->size;
+    return this->rp;
 }
 
-int JumblePuzzle::getRowCol() const{
-    return this->size;
+int JumblePuzzle::getColPos() const{
+    return this->cp;
 }

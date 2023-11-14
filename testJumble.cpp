@@ -12,7 +12,7 @@
 #include <string>
 #include <iostream>
 #include <ctime>
-#include "jumble.h"
+#include "jumble.cpp"
 using namespace std;
 
 // Displays the puzzle to the screen.
@@ -151,6 +151,49 @@ void testJumble() {
 	for (int i = 0; i < loopLimit; i++)
 		JumblePuzzle jp("HIDDENWORD", "hard");
 	cout << "\nPassed memory leak test!" << endl;
+
+	    // Test Invalid Word Length
+    cout << "Testing Invalid Word Length:" << endl;
+    try {
+        JumblePuzzle jpShort("ab", "easy");
+    } catch (BadJumbleException& e) {
+        cout << "Caught expected exception for short word: " << e.what() << endl;
+    }
+    try {
+        JumblePuzzle jpLong("abcdefghijk", "easy");
+    } catch (BadJumbleException& e) {
+        cout << "Caught expected exception for long word: " << e.what() << endl;
+    }
+
+    // Test Invalid Difficulty Level
+    cout << "Testing Invalid Difficulty Level:" << endl;
+    try {
+        JumblePuzzle jpInvalidDiff("hello", "invalid");
+    } catch (BadJumbleException& e) {
+        cout << "Caught expected exception for invalid difficulty: " << e.what() << endl;
+    }
+
+    // Test Puzzle Generation with Different Words and Difficulties
+    cout << "Testing Puzzle Generation with Different Words and Difficulties:" << endl;
+    JumblePuzzle jpEasy("test", "easy");
+    cout << "Easy puzzle size (expected double of word length): " << jpEasy.getSize() << endl;
+    JumblePuzzle jpMedium("test", "medium");
+    cout << "Medium puzzle size (expected triple of word length): " << jpMedium.getSize() << endl;
+    JumblePuzzle jpHard("test", "hard");
+    cout << "Hard puzzle size (expected quadruple of word length): " << jpHard.getSize() << endl;
+
+    // The following test cases require implementation or modification based on your class design
+    // Test Correct Placement of Word
+    // Test Copy Constructor Deep Copy
+    // Test Destructor
+    // Test Accessor Methods
+    // Test Puzzle Uniqueness
+
+    // Example for Testing Accessor Methods
+    cout << "Testing Accessor Methods:" << endl;
+    JumblePuzzle jpAccessors("word", "medium");
+    cout << "Size: " << jpAccessors.getSize() << ", Row Pos: " << jpAccessors.getRowPos() 
+         << ", Col Pos: " << jpAccessors.getColPos() << ", Direction: " << jpAccessors.getDirection() << endl;
 
 } // end testJumble
 
