@@ -199,10 +199,10 @@ void testJumble() {
 
 int main() {
 
-	testJumble();
+	//testJumble();
 
 	// Make sure your class works before you play the game!
-	//playGame();
+	playGame();
 
 	return 0;
 } // end main

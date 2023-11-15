@@ -60,10 +60,13 @@ JumblePuzzle::JumblePuzzle(string word, string diff){
     string directions = "nsew";
     bool placed = false;
 
-    
+    int endR;
+    int endC;
+    int sR;
+    int sC;
      do {
-        int startRow = rand() % size;
-        int startCol = rand() % size;
+        sR = rand() % size;
+        sC = rand() % size;
         char direction = directions[rand() % 4];
 
         
@@ -74,20 +77,22 @@ JumblePuzzle::JumblePuzzle(string word, string diff){
             case 's': dRow = 1; break;
             case 'w': dCol = -1; break;
         }
-        int endRow = startRow + dRow * (word.length() - 1);
-        int endCol = startCol + dCol * (word.length() - 1);
-        if (endRow >= 0 && endRow < size && endCol >= 0 && endCol < size) {
+        endR = sR + dRow * (word.length() - 1);
+        endC = sC + dCol * (word.length() - 1);
+        if (endR >= 0 && endR < size && endC >= 0 && endC < size) {
             for (int i = 0; i < word.length(); ++i) {
-                jumbleArr[startRow + i * dRow][startCol + i * dCol] = word[i];
+                jumbleArr[sR + i * dRow][sC + i * dCol] = word[i];
             }
-            this->rp = startRow;
-            this->cp = startCol;
+            this->rp = sR;
+            this->cp = sC;
             this->direction = direction;
             placed = true;
         }
     } while (!placed);
     
 };
+
+// Copy constructor for JumblePuzzle
 
 JumblePuzzle::JumblePuzzle(const JumblePuzzle& obj) {
     this->size = obj.size;
@@ -99,11 +104,12 @@ JumblePuzzle::JumblePuzzle(const JumblePuzzle& obj) {
     for (int i = 0; i < size; i++) {
         jumbleArr[i] = new char[size];
         for (int j = 0; j < size; j++) {
-            jumbleArr[i][j] = 'a' + rand() % 26;
+            this->jumbleArr[i][j] = obj.jumbleArr[i][j];
         }
     }
 }
 
+//destructor
 JumblePuzzle::~JumblePuzzle(){
     for (int j = 0; j < size; j++) {
         delete[] jumbleArr[j];
@@ -111,7 +117,7 @@ JumblePuzzle::~JumblePuzzle(){
     delete[] jumbleArr;
 }
 
-
+//accessors
 charArrayPtr* JumblePuzzle::getJumble() const {
     return this->jumbleArr;
 } 
