@@ -21,7 +21,7 @@ This Word Search Puzzle Game allows players to search for a hidden word in a dyn
 
 **Requirements:**
 
-C++ compiler
+C++ compiler,
 Standard C++ libraries
 
 **Notes:**
