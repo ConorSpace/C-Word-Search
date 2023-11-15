@@ -6,7 +6,7 @@ This Word Search Puzzle Game allows players to search for a hidden word in a dyn
 
 **How to Play:**
 
-**Input the Word:** Enter a lowercase word that you want to search for in the puzzle. The word should be between 3 to 10 letters long.
+****Input the Word:**** Enter a lowercase word that you want to search for in the puzzle. The word should be between 3 to 10 letters long.
 
 **Select Difficulty:** Choose your difficulty level from "easy", "medium", or "hard". This affects the size of the puzzle grid.
 
