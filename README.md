@@ -2,7 +2,7 @@
 
 **Overview:**
 
-This Word Search Puzzle Game allows players to search for a hidden word in a dynamically generated puzzle. The player can choose the \n difficulty level and input the word they want to find. The game generates a grid filled with random letters, with the chosen word hidden in it.
+This Word Search Puzzle Game allows players to search for a hidden word in a dynamically generated puzzle. The player can choose the difficulty level and input the word they want to find. The game generates a grid filled with random letters, with the chosen word hidden in it.
 
 **How to Play:**
 
